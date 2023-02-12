@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>CKEditor</title>
+        <link rel="stylesheet" href="index.css">
+        <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    </head>
+    <body>
+        
+        <!-- <header style="margin-left: 500px;"><Textarea></Textarea></header> -->
+        <div class="flex">
+            <div id="notes-list" class="notes-list">
+            </div>
+            <!-- <table border="1px">
+                <thead>
+                    <tr></tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table> -->
+            <div class="text-area">
+                <textarea id="title" rows="4" cols="50">This is a sample title</textarea>
+                <div id="editor">This is some sample content.</div>
+                <button id="submit">Submit</button>
+            </div>
+        </div>
+    </body>
+            
+    <script>
+
+        const containerEl = document.querySelector("#notes-list");
+
+        let editorInstance;
+        ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .then( editor => {
+            editorInstance = editor
+                console.log( editor);
+        } )
+        .catch( error => {
+                console.error( error );
+        } );
+
+        let counter = 1;
+        let dataList = [];
+            // Assuming there is a <button id="submit">Submit</button> in your application.
+        document.querySelector( '#submit' ).addEventListener( 'click', () => {
+            const content = editorInstance.getData();
+            const title = document.querySelector("#title").value;
+
+            const data = {
+                counter,
+                title,
+                content,
+            }
+
+            dataList.push(data);
+            localStorage.setItem("notesList", JSON.stringify(dataList))
+
+            containerEl.innerHTML =  `<div class="note">
+                    <div>${counter}<div>
+                    <div>${title}</div>
+                    <div>${content}</div>
+                </div>` + containerEl.innerHTML;
+
+            counter+=1;
+            // ...
+
+            // const containerEl = document.querySelector("tbody");
+            // containerEl.innerHTML = `<tr><th>Title <br><hr> Discription</th><td>${editorData}</td></tr>` + containerEl.innerHTML
+        } );
+
+
+        const savedDataList = JSON.parse(localStorage.getItem("notesList"));
+        console.log(savedDataList)
+        dataList = savedDataList || [];
+        counter = dataList.length+1
+        // let newHtml = ``
+        // savedDataList.reverse().forEach(i => {
+        //     newHtml +=`<div class="note">
+        //             <div>${i.counter}<div>
+        //             <div>${i.title}</div>
+        //             <div>${i.content}</div>
+        //         </div>`
+        // })
+
+        const newHtml = dataList.reverse().map(i => {
+            return `<div class="note">
+                    <div>${i.counter}<div>
+                    <div>${i.title}</div>
+                    <div>${i.content}</div>
+                </div>`
+        }).join("");
+
+        containerEl.innerHTML = newHtml || "Data not available";
+
+    </script>
+</html>
