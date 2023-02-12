@@ -11,13 +11,6 @@
         <div class="flex">
             <div id="notes-list" class="notes-list">
             </div>
-            <!-- <table border="1px">
-                <thead>
-                    <tr></tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table> -->
             <div class="text-area">
                 <textarea id="title" rows="4" cols="50">This is a sample title</textarea>
                 <div id="editor">This is some sample content.</div>
@@ -72,7 +65,7 @@
 
 
         const savedDataList = JSON.parse(localStorage.getItem("notesList"));
-        console.log(savedDataList)
+
         dataList = savedDataList || [];
         counter = dataList.length+1
         // let newHtml = ``
